@@ -8,7 +8,7 @@ See LICENSE.txt for full license details
 
 import pyble
 import struct
-import paho.mqtt.client as mqtt
+#import paho.mqtt.client as mqtt
 from gi.repository import GLib
 from gi.repository import GObject
 
@@ -16,9 +16,9 @@ from gi.repository import GObject
 MQTT_SERVER = 'localhost'
 MQTT_CLIENT = None
 
-def publish(topic, key, value):
-    payload = '{"%s": %s}' % (str(key),str(value))
-    MQTT_CLIENT.publish( topic=topic, payload=payload )
+#def publish(topic, key, value):
+#    payload = '{"%s": %s}' % (str(key),str(value))
+#    MQTT_CLIENT.publish( topic=topic, payload=payload )
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -157,12 +157,13 @@ def on_new_device(d):
             d.Connect()
 
 def main():
-    init_mqtt()
+#    init_mqtt()
     pyble.set_on_device_added_listener(on_device_added)
 
     for d in pyble.devices():
         on_new_device(d)
 
+    print( 'Discovery starting' )
     for a in pyble.adapters():
         a.StartDiscovery()
 
