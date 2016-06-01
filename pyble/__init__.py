@@ -4,6 +4,9 @@ This file is part of pyble which is released under Modified BSD license
 See LICENSE.txt for full license details
 """
 
+import sys
+this = sys.modules[__name__]
+
 def adapters():
     from pyble.config import ADAPTERS
     return ( d for d in ADAPTERS.values() )
@@ -44,11 +47,11 @@ def get_characteristic( char_uuid, service_uuid=None ):
 initialized = False
 
 if not initialized:
+    this.on_device_added = None
     initialized = True
     from pyble.objects import init
     init()
 
 def set_on_device_added_listener(listener):
-    from pyble.config import on_device_added
-    on_device_added = listener
+    this.on_device_added = listener
 

@@ -4,12 +4,15 @@ This file is part of pyble which is released under Modified BSD license
 See LICENSE.txt for full license details
 """
 
+import sys
 from pyble.Adapter import Adapter
 from pyble.BleDevice import BleDevice
 from pyble.GattDescriptor import GattDescriptor
 from pyble.GattService import GattService
 from pyble.GattCharacteristic import GattCharacteristic
-from pyble.config import DEVICES, SERVICES, CHARACTERISTICS, DESCRIPTORS, ADAPTERS, on_device_added
+from pyble.config import DEVICES, SERVICES, CHARACTERISTICS, DESCRIPTORS, ADAPTERS
+
+this = sys.modules['pyble']
 
 def create_existing_objects(manager):
     objects = manager.GetManagedObjects()
@@ -38,9 +41,8 @@ def create_adapter(path):
 def create_device(path):
     dev = BleDevice( path )
     DEVICES[ path ] = dev
-    print( on_device_added )
-    if on_device_added:
-        on_device_added(dev)
+    if this.on_device_added:
+        this.on_device_added(dev)
 
 def create_gatt_service(path):
     service = GattService(path)

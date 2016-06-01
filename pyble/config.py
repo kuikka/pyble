@@ -10,4 +10,3 @@ SERVICES = {}
 CHARACTERISTICS = {}
 DESCRIPTORS = {}
 
-on_device_added = None
