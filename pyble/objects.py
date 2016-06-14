@@ -64,10 +64,28 @@ def dump_object(path, interfaces_and_properties):
             print( '    {}: {}'.format( property, interfaces_and_properties[ interface ][ property ] ) )
 
 # OBJPATH object_path, DICT<STRING,DICT<STRING,VARIANT>> interfaces_and_properties);
-def new_object(path, interfaces_and_properties):
-    print( 'new_object: {}, interfaces: {}'.format(path, ', '.join(interfaces_and_properties.keys())))
+def interfaces_added(path, interfaces_and_properties):
+    print( 'interfaces_added: {}, interfaces: {}'.format(path, ', '.join(interfaces_and_properties.keys())))
     for interface in interfaces_and_properties.keys():
         create_object(interface,path)
+
+def remove_object(path, interface):
+    if interface == 'org.bluez.Device1':
+        DEVICES.pop( path, None)
+    elif interface == 'org.bluez.GattService1':
+        SERVICES.pop( path, None )
+    elif interface == 'org.bluez.GattCharacteristic1':
+        CHARACTERISTICS.pop( path, None )
+    elif interface == 'org.bluez.GattDescriptor1':
+        DESCRIPTORS.pop( path, None )
+    elif interface == 'org.bluez.Adapter1':
+        ADAPTERS.pop( path, None )
+
+# OBJPATH object_path, ARRAY<STRING> interfaces
+def interfaces_removed(path, interfaces):
+    print( 'interfaces_removed: {}, interfaces: {}'.format(path, ', '.join(interfaces)))
+    for interface in interfaces:
+        remove_object(path, interface)
 
 def init():
     import dbus
@@ -77,5 +95,6 @@ def init():
     manager = dbus.Interface(bus.get_object("org.bluez", "/"),
                      "org.freedesktop.DBus.ObjectManager")
 
-    manager.connect_to_signal( 'InterfacesAdded', new_object )
+    manager.connect_to_signal( 'InterfacesAdded', interfaces_added )
+    manager.connect_to_signal( 'InterfacesRemoved', interfaces_removed )
     create_existing_objects(manager)
