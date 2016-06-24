@@ -70,16 +70,20 @@ def interfaces_added(path, interfaces_and_properties):
         create_object(interface,path)
 
 def remove_object(path, interface):
+    obj = None
     if interface == 'org.bluez.Device1':
-        DEVICES.pop( path, None)
+        obj = DEVICES.pop( path, None)
     elif interface == 'org.bluez.GattService1':
-        SERVICES.pop( path, None )
+        obj = SERVICES.pop( path, None )
     elif interface == 'org.bluez.GattCharacteristic1':
-        CHARACTERISTICS.pop( path, None )
+        obj = CHARACTERISTICS.pop( path, None )
     elif interface == 'org.bluez.GattDescriptor1':
-        DESCRIPTORS.pop( path, None )
+        obj = DESCRIPTORS.pop( path, None )
     elif interface == 'org.bluez.Adapter1':
-        ADAPTERS.pop( path, None )
+        obj = ADAPTERS.pop( path, None )
+
+    if obj:
+        obj.close()
 
 # OBJPATH object_path, ARRAY<STRING> interfaces
 def interfaces_removed(path, interfaces):

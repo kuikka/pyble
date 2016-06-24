@@ -59,3 +59,5 @@ class DbusObject(object):
         pass
         #print( 'Dbusobject){}) reply'.format(self.path))
 
+    def close(self):
+        self.property_cb = {}

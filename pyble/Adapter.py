@@ -5,6 +5,7 @@ See LICENSE.txt for full license details
 """
 
 from pyble.DbusObject import DbusObject
+from pyble.BleDevice import BleDevice
 from pyble.config import DEVICES
 
 class Adapter(DbusObject):
@@ -26,6 +27,12 @@ class Adapter(DbusObject):
         if filter:
             self.proxy.SetDiscoveryFilter( { 'Transport': filter }, reply_handler=self.void_reply_handler, error_handler=self.error_handler )
         self.proxy.StartDiscovery(reply_handler=self.void_reply_handler, error_handler=self.error_handler)
+
+    def RemoveDevice(self, arg):
+        if isinstance(arg, BleDevice):
+            self.proxy.RemoveDevice(arg.path)
+        else:
+            self.proxy.RemoveDevice(arg)
 
     def devices(self):
         return [ DEVICES[path] for path in DEVICES.keys() if path.startswith(self.path) ]
