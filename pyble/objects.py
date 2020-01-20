@@ -65,7 +65,7 @@ def dump_object(path, interfaces_and_properties):
 
 # OBJPATH object_path, DICT<STRING,DICT<STRING,VARIANT>> interfaces_and_properties);
 def interfaces_added(path, interfaces_and_properties):
-    print( 'interfaces_added: {}, interfaces: {}'.format(path, ', '.join(interfaces_and_properties.keys())))
+    # print( 'interfaces_added: {}, interfaces: {}'.format(path, ', '.join(interfaces_and_properties.keys())))
     for interface in interfaces_and_properties.keys():
         create_object(interface,path)
 
