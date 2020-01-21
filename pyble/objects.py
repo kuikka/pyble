@@ -65,9 +65,10 @@ def dump_object(path, interfaces_and_properties):
 
 # OBJPATH object_path, DICT<STRING,DICT<STRING,VARIANT>> interfaces_and_properties);
 def interfaces_added(path, interfaces_and_properties):
-    # print( 'interfaces_added: {}, interfaces: {}'.format(path, ', '.join(interfaces_and_properties.keys())))
+    #print( 'interfaces_added: {}, interfaces: {}'.format(path, ', '.join(interfaces_and_properties.keys())))
     for interface in interfaces_and_properties.keys():
         create_object(interface,path)
+    #print("Have {} devices".format(len(DEVICES)))
 
 def remove_object(path, interface):
     obj = None
@@ -87,9 +88,10 @@ def remove_object(path, interface):
 
 # OBJPATH object_path, ARRAY<STRING> interfaces
 def interfaces_removed(path, interfaces):
-    print( 'interfaces_removed: {}, interfaces: {}'.format(path, ', '.join(interfaces)))
+    #print( 'interfaces_removed: {}, interfaces: {}'.format(path, ', '.join(interfaces)))
     for interface in interfaces:
         remove_object(path, interface)
+    #print("Have {} devices".format(len(DEVICES)))
 
 def init():
     import dbus

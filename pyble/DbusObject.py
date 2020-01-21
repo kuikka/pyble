@@ -20,7 +20,7 @@ class DbusObject(object):
                 self.bus.get_object('org.bluez', self.path),
                 'org.freedesktop.DBus.Properties')
 
-        self.properties.connect_to_signal( 'PropertiesChanged', self.OnPropertiesChanged)
+        self.signal = None
 
     def __repr__(self):
         return '{}({})'.format(self._intf, self._path)
@@ -48,6 +48,10 @@ class DbusObject(object):
                 cb(self, prop, changed_properties[prop])
 
     def RegisterForPropertyChanged(self, property_value, cb):
+        # Register for PropertiseChanged
+        if self.signal is None:
+            self.signal = self.properties.connect_to_signal( 'PropertiesChanged', self.OnPropertiesChanged)
+
         l = self.property_cb.get(property_value, list())
         l.append(cb)
         self.property_cb[property_value] = l
@@ -60,4 +64,6 @@ class DbusObject(object):
         #print( 'Dbusobject){}) reply'.format(self.path))
 
     def close(self):
-        self.property_cb = {}
+        if self.signal is not None:
+            self.signal.remove()
+        self.property_cb.clear()
